@@ -297,26 +297,64 @@
       const englishVoice = voices.find(voice => /^en(-|_)/i.test(voice.lang)) || voices.find(voice => /english/i.test(voice.name));
       if (englishVoice) utterance.voice = englishVoice;
       boundarySeen = false;
+      const speechRate = Number($('speedRange').value);
+      let speechStartedAt = 0;
+      let chromeAnchorChar = 0;
+      let chromeAnchorTime = 0;
+      let chromeCharsPerMs = speechRate / 62;
+      let previousChromeBoundary = null;
+      let lastChromeChar = 0;
       utterance.onstart = () => {
         if (token !== speechToken) return;
         setPlaying(true);
         // Start the estimate only when the voice actually starts, never while speech is queued.
-        const startedAt = performance.now();
+        speechStartedAt = performance.now();
         const punctuationPauses = (text.match(/[,.!?;:]/g) || []).length * 100;
-        const msPerCharacter = isGoogleChrome ? 62 : 78;
-        const estimateMs = Math.max(1200, (text.length * msPerCharacter + punctuationPauses) / Number($('speedRange').value));
+        const estimateMs = Math.max(1200, (text.length * (isGoogleChrome ? 62 : 78) + punctuationPauses) / speechRate);
+        chromeAnchorChar = 0;
+        chromeAnchorTime = 0;
+        chromeCharsPerMs = speechRate / 62;
+        previousChromeBoundary = null;
+        lastChromeChar = 0;
         fallbackTimer = window.setInterval(() => {
           if (token !== speechToken || (boundarySeen && !isGoogleChrome)) return;
-          // Chrome's word-boundary events can lag speech, so keep the calibrated clock running there.
-          const progress = Math.min(0.9, (performance.now() - startedAt) / estimateMs);
-          highlightAt(Math.floor(progress * text.length));
+          if (isGoogleChrome) {
+            const elapsedMs = performance.now() - speechStartedAt;
+            const projectedChar = chromeAnchorChar + Math.max(0, elapsedMs - chromeAnchorTime) * chromeCharsPerMs;
+            lastChromeChar = Math.max(lastChromeChar, Math.min(text.length * 0.9, projectedChar));
+            highlightAt(Math.floor(lastChromeChar));
+          } else {
+            const progress = Math.min(0.9, (performance.now() - speechStartedAt) / estimateMs);
+            highlightAt(Math.floor(progress * text.length));
+          }
         }, 120);
       };
       utterance.onboundary = (event) => {
         if (token !== speechToken || event.name && event.name !== 'word') return;
         if (!Number.isFinite(event.charIndex) || event.charIndex < 0 || event.charIndex >= text.length) return;
-        // Edge reports reliable word positions; Chromium's event timing is inconsistent, so its clock stays active.
-        if (isGoogleChrome) return;
+        if (isGoogleChrome) {
+          // Use the boundary's audio timestamp to measure this voice's pace and catch up if Chrome dispatches late.
+          const nowElapsedMs = performance.now() - speechStartedAt;
+          const eventElapsedMs = Number.isFinite(event.elapsedTime)
+            ? Math.min(nowElapsedMs, Math.max(0, event.elapsedTime * 1000))
+            : nowElapsedMs;
+          if (previousChromeBoundary) {
+            const deltaChars = event.charIndex - previousChromeBoundary.charIndex;
+            const deltaMs = eventElapsedMs - previousChromeBoundary.elapsedMs;
+            if (deltaChars > 0 && deltaMs >= 80) {
+              const baseline = speechRate / 62;
+              const observed = Math.min(baseline * 2, Math.max(baseline * 0.5, deltaChars / deltaMs));
+              chromeCharsPerMs = chromeCharsPerMs * 0.55 + observed * 0.45;
+            }
+          }
+          previousChromeBoundary = { charIndex: event.charIndex, elapsedMs: eventElapsedMs };
+          chromeAnchorChar = event.charIndex;
+          chromeAnchorTime = eventElapsedMs;
+          const projectedChar = event.charIndex + Math.max(0, nowElapsedMs - eventElapsedMs) * chromeCharsPerMs;
+          lastChromeChar = Math.max(lastChromeChar, projectedChar);
+          highlightAt(Math.floor(lastChromeChar));
+          return;
+        }
         boundarySeen = true;
         clearInterval(fallbackTimer);
         fallbackTimer = null;
