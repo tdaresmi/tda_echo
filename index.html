@@ -4,9 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f7f8fc" />
-  <meta name="description" content="Practice English pronunciation with TDA Echo: listen to ready-made paragraphs, follow karaoke word highlights, and explore Turkish translations." />
+  <meta name="description" content="Practice English pronunciation with TDA Echo. Listen to natural English, follow word or sentence highlights, adjust speaking speed, and explore Turkish translations." />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://tda-echo.vercel.app/" />
-  <title>TDA Echo — English Pronunciation Studio</title>
+  <link id="siteIcon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234f46e5'/%3E%3Cpath d='M13 31h5l4-11 7 24 7-29 7 34 5-18h4' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TDA Echo" />
+  <meta property="og:title" content="TDA Echo | English Pronunciation Practice" />
+  <meta property="og:description" content="Listen to natural English, follow word or sentence highlights, adjust speaking speed, and explore Turkish translations with TDA Echo." />
+  <meta property="og:url" content="https://tda-echo.vercel.app/" />
+  <meta property="og:image" content="https://tda-echo.vercel.app/TDA_Logo.png" />
+  <meta property="og:image:alt" content="TDA Echo logo" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="TDA Echo | English Pronunciation Practice" />
+  <meta name="twitter:description" content="Listen to natural English, follow word or sentence highlights, adjust speaking speed, and explore Turkish translations." />
+  <meta name="twitter:image" content="https://tda-echo.vercel.app/TDA_Logo.png" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TDA Echo",
+      "url": "https://tda-echo.vercel.app/",
+      "description": "An English pronunciation practice tool with speech playback, karaoke-style word or sentence highlighting, adjustable speaking speed, and Turkish translations.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "en",
+      "image": "https://tda-echo.vercel.app/TDA_Logo.png",
+      "keywords": ["TDA Echo", "English pronunciation practice", "English listening practice", "karaoke reading"],
+      "browserRequirements": "A modern browser with speech synthesis support."
+    }
+  </script>
+  <title>TDA Echo | English Pronunciation Practice</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
@@ -17,11 +45,11 @@
     body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     .card-shadow { box-shadow: 0 24px 70px rgba(36, 47, 91, .10); }
     .dark .card-shadow { box-shadow: 0 24px 70px rgba(0, 0, 0, .25); }
-    .word { transition: color .12s ease, background-color .12s ease, box-shadow .12s ease; border-radius: .28em; }
-    .word.active { color: #fff; background: #635bff; box-shadow: 0 0 0 .15em #635bff; }
-    .dark .word.active { color: #fff; background: #817aff; box-shadow: 0 0 0 .15em #817aff; }
-    .word.segment-active { color: #4338ca; background: rgba(99, 91, 255, .12); box-shadow: 0 0 0 .12em rgba(99, 91, 255, .12); }
-    .dark .word.segment-active { color: #c4bfff; background: rgba(129, 122, 255, .2); box-shadow: 0 0 0 .12em rgba(129, 122, 255, .2); }
+    .word { padding: .04em .12em; transition: color .12s ease, background-color .12s ease, box-shadow .12s ease; border-radius: .32em; }
+    .word.active { color: #fff; background: #4338ca; box-shadow: 0 0 0 .18em #4338ca, 0 4px 12px rgba(67, 56, 202, .28); font-weight: 800; }
+    .dark .word.active { color: #fff; background: #5b52e8; box-shadow: 0 0 0 .18em #5b52e8, 0 4px 12px rgba(91, 82, 232, .35); }
+    .word.segment-active { color: #312e81; background: rgba(99, 91, 255, .2); box-shadow: 0 0 0 .14em rgba(99, 91, 255, .2); font-weight: 700; }
+    .dark .word.segment-active { color: #e0ddff; background: rgba(129, 122, 255, .3); box-shadow: 0 0 0 .14em rgba(129, 122, 255, .3); }
     .wave-bar { animation: wave 1s ease-in-out infinite; transform-origin: bottom; }
     .wave-bar:nth-child(2n) { animation-delay: .15s; }
     .wave-bar:nth-child(3n) { animation-delay: .3s; }
@@ -33,8 +61,11 @@
   <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
     <header class="mb-8 flex items-center justify-between gap-4">
       <a href="#" class="flex items-center gap-3" aria-label="TDA Echo home">
-        <span class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
-          <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true"><path d="M4 10v4m4-8v12m4-15v18m4-13v8m4-5v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        <span class="relative grid h-11 w-11 shrink-0 place-items-center">
+          <span id="brandLogoFallback" class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
+            <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true"><path d="M4 10v4m4-8v12m4-15v18m4-13v8m4-5v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          </span>
+          <img id="brandLogo" alt="TDA Echo logo" decoding="async" class="absolute inset-0 hidden h-full w-full rounded-2xl object-contain" />
         </span>
         <span><span class="block text-lg font-extrabold tracking-tight">TDA <span class="text-indigo-600 dark:text-indigo-400">Echo</span></span><span class="block text-xs font-medium text-slate-500 dark:text-slate-400">ENGLISH PRONUNCIATION STUDIO</span></span>
       </a>
@@ -91,10 +122,11 @@
           <div class="flex items-center gap-3 sm:w-48"><span class="text-[11px] text-slate-400">Slow</span><input id="speedRange" type="range" min="0.65" max="1.25" value="1" step="0.05" class="h-2 w-full cursor-pointer accent-indigo-600" aria-label="Speaking speed"><span class="text-[11px] text-slate-400">Fast</span></div>
         </div>
 
-        <div class="mt-6 rounded-2xl border border-indigo-100 bg-indigo-50/55 p-4 sm:p-5 dark:border-indigo-950 dark:bg-indigo-950/25">
-          <div class="mb-3 flex items-center justify-between gap-3"><h3 class="text-xs font-bold uppercase tracking-[.12em] text-indigo-700 dark:text-indigo-300">Karaoke follow-along</h3><div id="waveform" class="hidden h-5 items-end gap-[3px]" aria-hidden="true"><i class="wave-bar h-3 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-5 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-2.5 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-4 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-3 w-1 rounded-full bg-indigo-500"></i></div><span id="playStatus" class="text-xs font-medium text-slate-500 dark:text-slate-400">Ready when you are</span></div>
-          <p id="karaokeText" class="min-h-[3.5rem] text-base leading-8 text-slate-600 dark:text-slate-300" aria-live="off">Your words will appear here as you practice.</p>
-          <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-indigo-100 dark:bg-indigo-900/70"><div id="progressBar" class="h-full w-0 rounded-full bg-indigo-500 transition-[width] duration-200"></div></div>
+        <div class="mt-6 rounded-2xl border-2 border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-violet-50 p-4 shadow-sm shadow-indigo-100/70 sm:p-5 dark:border-indigo-800 dark:from-indigo-950/60 dark:via-slate-900 dark:to-violet-950/50 dark:shadow-none">
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-2"><h3 class="text-sm font-extrabold uppercase tracking-[.12em] text-indigo-800 dark:text-indigo-200">Karaoke follow-along</h3><div class="flex items-center gap-2"><div id="waveform" class="hidden h-5 items-end gap-[3px]" aria-hidden="true"><i class="wave-bar h-3 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-5 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-2.5 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-4 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-3 w-1 rounded-full bg-indigo-500"></i></div><span id="playStatus" class="rounded-full border border-indigo-100 bg-white/80 px-2.5 py-1 text-xs font-semibold text-indigo-800 dark:border-indigo-800 dark:bg-slate-950/70 dark:text-indigo-200">Ready when you are</span></div></div>
+          <p id="karaokeText" class="min-h-[3.5rem] rounded-xl border border-indigo-100 bg-white/80 px-3.5 py-3 text-lg font-semibold leading-9 tracking-wide text-slate-800 shadow-inner dark:border-indigo-900 dark:bg-slate-950/65 dark:text-slate-100 sm:text-xl" aria-live="off">Your words will appear here as you practice.</p>
+          <p class="mt-2 text-xs font-semibold text-indigo-800 dark:text-indigo-200">Follow the highlighted word—or the whole sentence when word timing is unavailable.</p>
+          <div class="mt-3 h-2 overflow-hidden rounded-full bg-indigo-100 ring-1 ring-indigo-200/80 dark:bg-indigo-900/70 dark:ring-indigo-800"><div id="progressBar" class="h-full w-0 rounded-full bg-indigo-600 transition-[width] duration-200 dark:bg-indigo-400"></div></div>
         </div>
 
         <div class="mt-5 border-t border-slate-100 pt-4 dark:border-slate-800">
@@ -437,6 +469,16 @@
       if (opening && !currentTranslation && validateEnglish(input.value).ok) translateCurrentText();
     });
     $('translateBtn').addEventListener('click', translateCurrentText);
+    const logoProbe = new Image();
+    logoProbe.onload = () => {
+      $('brandLogo').src = './TDA_Logo.png';
+      $('brandLogo').classList.remove('hidden');
+      $('brandLogoFallback').classList.add('hidden');
+      const siteIcon = $('siteIcon');
+      siteIcon.href = './TDA_Logo.png';
+      siteIcon.type = 'image/png';
+    };
+    logoProbe.src = './TDA_Logo.png';
     populateSamples();
     $('speedValue').textContent = '1×';
     if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
