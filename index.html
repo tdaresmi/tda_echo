@@ -4,9 +4,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f7f8fc" />
-  <meta name="description" content="Practice English pronunciation with TDA Echo: listen to ready-made paragraphs, follow karaoke word highlights, and explore Turkish translations." />
+  <meta name="description" content="TDA Echo is a free, open-source English pronunciation practice site with karaoke word highlighting, adjustable speech speed, and Turkish translations." />
   <link rel="canonical" href="https://tda-echo.vercel.app/" />
-  <title>TDA Echo — English Pronunciation Studio</title>
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="application-name" content="TDA Echo" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TDA Echo" />
+  <meta property="og:url" content="https://tda-echo.vercel.app/" />
+  <meta property="og:title" content="TDA Echo — Free English Pronunciation Practice" />
+  <meta property="og:description" content="Practice English pronunciation for free with listen-along karaoke, adjustable speech speed, and Turkish translations." />
+  <meta property="og:locale" content="en_US" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="TDA Echo — Free English Pronunciation Practice" />
+  <meta name="twitter:description" content="Practice English pronunciation for free with listen-along karaoke, adjustable speech speed, and Turkish translations." />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TDA Echo",
+      "url": "https://tda-echo.vercel.app/",
+      "description": "Free, open-source English pronunciation practice with karaoke word highlighting, adjustable speech speed, and Turkish translations.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "inLanguage": ["en", "tr"],
+      "isAccessibleForFree": true
+    }
+  </script>
+  <title>TDA Echo | Free English Pronunciation Practice</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
@@ -44,8 +68,8 @@
 
     <section class="mb-8 max-w-2xl">
       <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-900/70 dark:bg-indigo-950/60 dark:text-indigo-300"><span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span> LISTEN · PRACTICE · SPEAK</div>
-      <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl dark:text-white">Find your <span class="text-indigo-600 dark:text-indigo-400">English rhythm.</span></h1>
-      <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">Listen to natural English, follow each word, and practice at your own pace.</p>
+      <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl dark:text-white">TDA Echo: <span class="text-indigo-600 dark:text-indigo-400">English pronunciation practice.</span></h1>
+      <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">Practice English pronunciation for free: listen to natural speech, follow each word with karaoke highlighting, and improve at your own pace.</p>
     </section>
 
     <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(290px,.8fr)]">
@@ -242,6 +266,7 @@
       speechToken++;
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       clearInterval(fallbackTimer);
+      fallbackTimer = null;
       boundarySeen = false;
       setPlaying(false);
       if (resetStatus) playStatus.textContent = 'Playback stopped';
@@ -267,15 +292,32 @@
       const englishVoice = voices.find(voice => /^en(-|_)/i.test(voice.lang)) || voices.find(voice => /english/i.test(voice.name));
       if (englishVoice) utterance.voice = englishVoice;
       boundarySeen = false;
-      utterance.onstart = () => { if (token !== speechToken) return; setPlaying(true); };
+      utterance.onstart = () => {
+        if (token !== speechToken) return;
+        setPlaying(true);
+        // Start the estimate only when the voice actually starts, never while speech is queued.
+        const startedAt = performance.now();
+        const punctuationPauses = (text.match(/[,.!?;:]/g) || []).length * 100;
+        const estimateMs = Math.max(1200, (text.length * 78 + punctuationPauses) / Number($('speedRange').value));
+        fallbackTimer = window.setInterval(() => {
+          if (token !== speechToken || boundarySeen) return;
+          // Keep the estimate slightly behind typical speech; native word events take over when available.
+          const progress = Math.min(0.9, (performance.now() - startedAt) / estimateMs);
+          highlightAt(Math.floor(progress * text.length));
+        }, 120);
+      };
       utterance.onboundary = (event) => {
         if (token !== speechToken || event.name && event.name !== 'word') return;
+        if (!Number.isFinite(event.charIndex) || event.charIndex < 0 || event.charIndex >= text.length) return;
         boundarySeen = true;
+        clearInterval(fallbackTimer);
+        fallbackTimer = null;
         highlightAt(event.charIndex);
       };
       utterance.onend = () => {
         if (token !== speechToken) return;
         clearInterval(fallbackTimer);
+        fallbackTimer = null;
         setPlaying(false);
         playStatus.textContent = 'Nice work — listen again or try it yourself.';
         progressBar.style.width = '100%';
@@ -285,18 +327,11 @@
       utterance.onerror = (event) => {
         if (token !== speechToken || event.error === 'canceled' || event.error === 'interrupted') return;
         clearInterval(fallbackTimer);
+        fallbackTimer = null;
         setPlaying(false);
         playStatus.textContent = 'Could not play speech. Please try again.';
       };
       window.speechSynthesis.speak(utterance);
-      // Fallback for engines that omit SpeechSynthesisUtterance.onboundary.
-      const started = Date.now();
-      const estimateMs = Math.max(1200, text.length * 62 / Number($('speedRange').value));
-      fallbackTimer = window.setInterval(() => {
-        if (token !== speechToken || boundarySeen) return;
-        const progress = Math.min(0.98, (Date.now() - started) / estimateMs);
-        highlightAt(Math.floor(progress * text.length));
-      }, 120);
       restartBtn.disabled = false;
     }
 
