@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f8fc" />
+  <meta name="description" content="Practice English pronunciation with TDA Echo: listen to ready-made paragraphs, follow karaoke word highlights, and explore Turkish translations." />
+  <link rel="canonical" href="https://tda-echo.vercel.app/" />
+  <title>TDA Echo — English Pronunciation Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <style>
+    :root { color-scheme: light; }
+    html.dark { color-scheme: dark; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .card-shadow { box-shadow: 0 24px 70px rgba(36, 47, 91, .10); }
+    .dark .card-shadow { box-shadow: 0 24px 70px rgba(0, 0, 0, .25); }
+    .word { transition: color .12s ease, background-color .12s ease, box-shadow .12s ease; border-radius: .28em; }
+    .word.active { color: #fff; background: #635bff; box-shadow: 0 0 0 .15em #635bff; }
+    .dark .word.active { color: #fff; background: #817aff; box-shadow: 0 0 0 .15em #817aff; }
+    .wave-bar { animation: wave 1s ease-in-out infinite; transform-origin: bottom; }
+    .wave-bar:nth-child(2n) { animation-delay: .15s; }
+    .wave-bar:nth-child(3n) { animation-delay: .3s; }
+    @keyframes wave { 0%,100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body class="min-h-screen bg-[#f7f8fc] text-slate-800 antialiased transition-colors dark:bg-[#10121a] dark:text-slate-100">
+  <main class="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
+    <header class="mb-8 flex items-center justify-between gap-4">
+      <a href="#" class="flex items-center gap-3" aria-label="TDA Echo home">
+        <span class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
+          <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true"><path d="M4 10v4m4-8v12m4-15v18m4-13v8m4-5v2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        </span>
+        <span><span class="block text-lg font-extrabold tracking-tight">TDA <span class="text-indigo-600 dark:text-indigo-400">Echo</span></span><span class="block text-xs font-medium text-slate-500 dark:text-slate-400">ENGLISH PRONUNCIATION STUDIO</span></span>
+      </a>
+      <button id="themeToggle" type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300" aria-label="Switch color theme" title="Switch color theme">
+        <svg id="sunIcon" viewBox="0 0 24 24" fill="none" class="hidden h-5 w-5" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg id="moonIcon" viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true"><path d="M20.2 15.4A8.8 8.8 0 0 1 8.6 3.8 8.9 8.9 0 1 0 20.2 15.4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </header>
+
+    <section class="mb-8 max-w-2xl">
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-900/70 dark:bg-indigo-950/60 dark:text-indigo-300"><span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span> LISTEN · PRACTICE · SPEAK</div>
+      <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl dark:text-white">Find your <span class="text-indigo-600 dark:text-indigo-400">English rhythm.</span></h1>
+      <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">Listen to natural English, follow each word, and practice at your own pace.</p>
+    </section>
+
+    <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(290px,.8fr)]">
+      <section class="card-shadow rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-7 dark:border-slate-800 dark:bg-slate-900" aria-labelledby="practiceHeading">
+        <div class="mb-5 flex items-center justify-between gap-3">
+          <div><h2 id="practiceHeading" class="text-lg font-bold">Practice text</h2><p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Choose a ready-made paragraph or write your own.</p></div>
+          <span class="rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">EN → TR</span>
+        </div>
+
+        <div class="mb-4">
+          <label for="sampleCategory" class="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Choose a practice paragraph</label>
+          <div class="grid gap-3 sm:grid-cols-[minmax(0,.72fr)_minmax(0,1.28fr)]">
+            <select id="sampleCategory" class="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-indigo-950">
+              <option value="daily">Daily conversation</option><option value="travel">Travel</option><option value="academic">Academic</option>
+            </select>
+            <select id="sampleSentence" class="h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100 dark:border-slate-700 dark:bg-slate-950 dark:focus:ring-indigo-950" aria-label="Choose a ready-made practice paragraph"></select>
+          </div>
+        </div>
+
+        <label for="practiceInput" class="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Your English text</label>
+        <textarea id="practiceInput" rows="4" maxlength="500" spellcheck="true" placeholder="Type or paste a sentence in English…" class="w-full resize-y rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-3.5 text-[15px] leading-7 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100 dark:border-slate-700 dark:bg-slate-950/70 dark:text-slate-100 dark:focus:border-indigo-500 dark:focus:bg-slate-950 dark:focus:ring-indigo-950"></textarea>
+        <div class="mt-2 flex flex-wrap items-center justify-between gap-2">
+          <p id="validationMessage" class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400" role="status" aria-live="polite"><span class="text-indigo-500">●</span> English text only, please.</p>
+          <span id="charCount" class="text-xs tabular-nums text-slate-400">0 / 500</span>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <button id="listenBtn" type="button" class="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white shadow-lg shadow-indigo-600/20 transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true"><path d="M8 5.5c0-.77.84-1.25 1.5-.86l10.2 6.02a1 1 0 0 1 0 1.72L9.5 18.4c-.66.39-1.5-.09-1.5-.86V5.5Z"/></svg> Listen
+          </button>
+          <button id="stopBtn" type="button" class="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-45 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800" disabled>
+            <svg viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg> Stop
+          </button>
+          <button id="restartBtn" type="button" class="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-bold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-45 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800" disabled>
+            <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true"><path d="M4.5 11a7.5 7.5 0 1 1 2.2 5.3M4.5 11V5.5M4.5 11H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Start over
+          </button>
+        </div>
+
+        <div class="mt-5 flex flex-col gap-3 rounded-2xl bg-slate-50 px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between dark:bg-slate-950/70">
+          <div class="flex items-center gap-2.5"><span class="grid h-8 w-8 place-items-center rounded-lg bg-white text-indigo-600 dark:bg-slate-800 dark:text-indigo-300"><svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true"><path d="M12 3v18m4-15v12M8 7v10M4 10v4m16-4v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><label for="speedRange" class="text-sm font-semibold">Speaking speed <span id="speedValue" class="ml-1 font-normal text-slate-500 dark:text-slate-400">1.0×</span></label></div>
+          <div class="flex items-center gap-3 sm:w-48"><span class="text-[11px] text-slate-400">Slow</span><input id="speedRange" type="range" min="0.65" max="1.25" value="1" step="0.05" class="h-2 w-full cursor-pointer accent-indigo-600" aria-label="Speaking speed"><span class="text-[11px] text-slate-400">Fast</span></div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-indigo-100 bg-indigo-50/55 p-4 sm:p-5 dark:border-indigo-950 dark:bg-indigo-950/25">
+          <div class="mb-3 flex items-center justify-between gap-3"><h3 class="text-xs font-bold uppercase tracking-[.12em] text-indigo-700 dark:text-indigo-300">Karaoke follow-along</h3><div id="waveform" class="hidden h-5 items-end gap-[3px]" aria-hidden="true"><i class="wave-bar h-3 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-5 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-2.5 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-4 w-1 rounded-full bg-indigo-500"></i><i class="wave-bar h-3 w-1 rounded-full bg-indigo-500"></i></div><span id="playStatus" class="text-xs font-medium text-slate-500 dark:text-slate-400">Ready when you are</span></div>
+          <p id="karaokeText" class="min-h-[3.5rem] text-base leading-8 text-slate-600 dark:text-slate-300" aria-live="off">Your words will appear here as you practice.</p>
+          <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-indigo-100 dark:bg-indigo-900/70"><div id="progressBar" class="h-full w-0 rounded-full bg-indigo-500 transition-[width] duration-200"></div></div>
+        </div>
+
+        <div class="mt-5 border-t border-slate-100 pt-4 dark:border-slate-800">
+          <button id="translationToggle" type="button" class="flex w-full items-center justify-between gap-4 text-left" aria-expanded="false" aria-controls="translationPanel"><span><span class="block text-sm font-bold">Turkish translation</span><span class="mt-1 block text-xs text-slate-500 dark:text-slate-400">See what your practice text means.</span></span><span id="translationArrow" class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-500 transition dark:bg-slate-800"><svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+          <div id="translationPanel" class="hidden pt-4">
+            <div class="rounded-xl bg-slate-50 p-4 dark:bg-slate-950/70"><p id="translationText" class="text-sm leading-6 text-slate-700 dark:text-slate-200">Choose or enter an English sentence to see its Turkish translation.</p><p id="translationNote" class="mt-2 hidden text-[11px] leading-5 text-slate-400">Custom text is sent to the free MyMemory translation service to get a translation. Avoid entering sensitive information.</p></div>
+            <button id="translateBtn" type="button" class="mt-3 hidden text-xs font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">Translate current text</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="space-y-5">
+        <section class="card-shadow overflow-hidden rounded-3xl border border-slate-200/80 bg-white dark:border-slate-800 dark:bg-slate-900">
+          <div class="bg-gradient-to-br from-indigo-600 to-violet-600 p-5 text-white sm:p-6"><div class="flex items-start justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[.15em] text-indigo-100">A quick practice tip</p><h2 class="mt-2 text-xl font-extrabold leading-snug">Listen first.<br/>Then say it out loud.</h2></div><span class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/15"><svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="1.8"/><path d="M19 11v1a7 7 0 0 1-14 0v-1m7 8v3m-4 0h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span></div><p class="mt-3 text-sm leading-6 text-indigo-100">Try shadowing: speak along with the voice and copy its rhythm, not just the individual sounds.</p></div>
+          <div class="p-5 sm:p-6"><h3 class="text-sm font-bold">Your practice flow</h3><ol class="mt-4 space-y-4"><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">1</span><span><strong class="block text-sm">Choose a paragraph</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Pick a daily, travel, or academic topic—or write your own English text.</span></span></li><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">2</span><span><strong class="block text-sm">Listen and follow</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Words light up as the browser reads them aloud.</span></span></li><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">3</span><span><strong class="block text-sm">Repeat and improve</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Slow down playback, then say the paragraph yourself.</span></span></li></ol></div>
+        </section>
+        <div class="rounded-2xl border border-slate-200/80 bg-white/70 p-4 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400"><span class="font-semibold text-slate-700 dark:text-slate-200">Browser note:</span> Voice and karaoke timing depend on your device and browser. Some voices do not report word boundaries; highlighting may be approximate. For audio, allow your browser to use speech synthesis.</div>
+      </aside>
+    </div>
+    <footer class="mt-8 text-center text-xs text-slate-400">TDA Echo · tda-echo.vercel.app · Made for everyday English practice · No account required</footer>
+  </main>
+
+  <script>
+    const samples = {
+      daily: [
+        { title: "Small Moments, Strong Connections", text: "Small moments of conversation can make a day feel brighter. I like to start the morning by asking my family about their plans, then share a cup of tea before work. These simple routines help us stay connected, even when everyone is busy.", tr: "Küçük sohbet anları bir günü daha güzel hale getirebilir. Sabah güne aileme planlarını sorarak başlamayı, ardından işe gitmeden önce onlarla bir fincan çay içmeyi seviyorum. Bu basit alışkanlıklar, herkes meşgul olduğunda bile bağımızı korumamıza yardımcı oluyor." },
+        { title: "A Walk Through the Neighborhood", text: "Last Saturday, my friend and I explored a new neighborhood on foot. We found a quiet bookshop, tried a delicious pastry, and talked with a local artist about her work. The afternoon reminded me that a little curiosity can turn an ordinary day into a lovely adventure.", tr: "Geçen cumartesi arkadaşım ve ben yeni bir mahalleyi yürüyerek keşfettik. Sakin bir kitapçı bulduk, lezzetli bir hamur işi denedik ve yerel bir sanatçıyla eserleri hakkında konuştuk. O öğleden sonra, biraz merakın sıradan bir günü güzel bir maceraya dönüştürebileceğini hatırlattı." }
+      ],
+      travel: [
+        { title: "A Smooth Airport Journey", text: "At the airport, I keep my passport and boarding pass in an easy-to-reach pocket. After checking the departure screen, I find my gate and fill my water bottle before boarding. A little preparation helps me feel calm and enjoy the start of my journey.", tr: "Havalimanında pasaportumu ve biniş kartımı kolayca ulaşabileceğim bir cepte tutarım. Kalkış ekranını kontrol ettikten sonra kapımı bulur ve uçağa binmeden önce su şişemi doldururum. Biraz hazırlık yapmak sakin kalmama ve yolculuğumun başlangıcının tadını çıkarmama yardımcı olur." },
+        { title: "Discovering a New City", text: "When I arrive in a new city, I like to explore it slowly instead of rushing from one attraction to another. I ask local people for recommendations, try a dish I have never tasted, and take time to notice the streets around me. Those small discoveries often become my favorite travel memories.", tr: "Yeni bir şehre vardığımda, bir turistik yerden diğerine koşmak yerine şehri yavaşça keşfetmeyi severim. Yerel halka önerilerini sorar, daha önce tatmadığım bir yemeği dener ve çevremdeki sokakları fark etmek için zaman ayırırım. Bu küçük keşifler çoğu zaman en sevdiğim seyahat anılarına dönüşür." }
+      ],
+      academic: [
+        { title: "Building a Language Habit", text: "Learning a new language takes patience, but short and regular practice can make a real difference. Reading a page aloud helps learners notice rhythm, while listening to a speaker introduces natural pronunciation. Over time, these small steps build confidence and make it easier to express ideas clearly.", tr: "Yeni bir dil öğrenmek sabır ister; ancak kısa ve düzenli çalışmalar gerçekten fark yaratabilir. Bir sayfayı sesli okumak, öğrenenlerin ritmi fark etmesine yardımcı olurken bir konuşmacıyı dinlemek doğal telaffuzu tanıtır. Zamanla bu küçük adımlar özgüven kazandırır ve fikirleri açıkça ifade etmeyi kolaylaştırır." },
+        { title: "Why Good Questions Matter", text: "Good research often begins with a clear question. Students can compare reliable sources, look for patterns in the evidence, and explain how their findings support an answer. This process does more than collect information: it encourages careful thinking and helps people understand complex topics from several points of view.", tr: "İyi bir araştırma çoğu zaman açık bir soruyla başlar. Öğrenciler güvenilir kaynakları karşılaştırabilir, kanıtlardaki örüntüleri arayabilir ve bulgularının bir yanıtı nasıl desteklediğini açıklayabilir. Bu süreç yalnızca bilgi toplamakla kalmaz; dikkatli düşünmeyi teşvik eder ve insanların karmaşık konuları farklı bakış açılarından anlamasına yardımcı olur." }
+      ]
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const input = $('practiceInput');
+    const category = $('sampleCategory');
+    const sampleSelect = $('sampleSentence');
+    const validationMessage = $('validationMessage');
+    const listenBtn = $('listenBtn');
+    const stopBtn = $('stopBtn');
+    const restartBtn = $('restartBtn');
+    const karaokeText = $('karaokeText');
+    const progressBar = $('progressBar');
+    const playStatus = $('playStatus');
+    const waveform = $('waveform');
+    let currentTranslation = '';
+    let utterance = null;
+    let activeSpeech = false;
+    let speechToken = 0;
+    let fallbackTimer = null;
+    let boundarySeen = false;
+    let currentWords = [];
+
+    function populateSamples() {
+      const list = samples[category.value];
+      sampleSelect.innerHTML = list.map((item, index) => `<option value="${index}">${escapeHtml(item.title)}</option>`).join('');
+      loadSample(0);
+    }
+    function loadSample(index) {
+      const item = samples[category.value][Number(index)];
+      if (!item) return;
+      stopSpeech(false);
+      input.value = item.text;
+      currentTranslation = item.tr;
+      $('translationText').textContent = item.tr;
+      $('translationNote').classList.add('hidden');
+      $('translateBtn').classList.add('hidden');
+      $('translationPanel').classList.add('hidden');
+      $('translationToggle').setAttribute('aria-expanded', 'false');
+      $('translationArrow').classList.remove('rotate-180');
+      updateInputState();
+    }
+
+    // Lightweight heuristic: reject Turkish text and common Spanish, French, German, and Italian markers.
+    const englishWords = new Set('a an the and or but if then so because as of at by for from in into on onto to with without about above after before between during through under over is am are was were be been being do does did have has had can could will would should may might must I you he she it we they me him her us them my your his its our their this that these those who what when where why how which not no yes please thank thanks hello hi good morning good afternoon good evening goodbye bye welcome excuse sorry okay ok all some any much many more most very really just also only often usually always never sometimes today tomorrow yesterday now later here there get go come take make use need want like love know think say tell ask give find see look work study learn speak read write listen help try practice improve clear mind walk after dinner nearest train station coffee week lovely meeting hope again soon reservation name two nights best way city center airport recommend local restaurant serves traditional food traditional food please let know delays connecting flight results suggest regular improve language fluency there is are was were relationship between sleep quality memory further research needed understand long term effects author argues education accessible everyone'.split(' ').map(word => word.toLowerCase()));
+    const normalizeWord = word => word.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const turkishWords = new Set('bir ve veya ama cunku icin ile bu su o ben sen siz biz onlar nasil nerede ne neden mi cok tesekkur ederim merhaba gunaydin iyi aksamlar lutfen istasyonuna istasyonu yakindaki en yakin tren gidebilir miyim istiyorum bugun yarin dun nasilsin tesekkurler evet hayir'.split(' ').map(normalizeWord));
+    const otherLanguageWords = new Set('hola amigo buenos dias gracias favor puedo donde esta estas este el la los las una uno soy estoy bonjour merci bonsoir salut beaucoup avec pour je vous nous tres guten morgen tag danke bitte ich du wir sie nicht und ist nein ciao grazie buongiorno buonasera perche parlare dove vorrei'.split(' ').map(normalizeWord));
+    function validateEnglish(text) {
+      const trimmed = text.trim();
+      if (!trimmed) return { ok: false, empty: true, message: 'English text only, please.' };
+      const tokens = (trimmed.match(/\p{L}+/gu) || []).map(normalizeWord);
+      if (!tokens.length) return { ok: false, message: 'Please enter your text in English.' };
+      if (tokens.some(word => !/\p{Script=Latin}/u.test(word))) return { ok: false, message: 'Please enter your text in English.' };
+      const turkishCount = tokens.filter(word => turkishWords.has(word)).length;
+      const otherLanguageCount = tokens.filter(word => otherLanguageWords.has(word)).length;
+      const knownCount = tokens.filter(word => englishWords.has(word)).length;
+      if (turkishCount > 0 || otherLanguageCount > 0 || (tokens.length >= 5 && knownCount / tokens.length < 0.1)) {
+        return { ok: false, message: 'This may not be English. Please enter an English sentence.' };
+      }
+      return { ok: true, message: 'Looks like English — you’re ready to practice.' };
+    }
+    function updateInputState() {
+      const text = input.value;
+      const result = validateEnglish(text);
+      $('charCount').textContent = `${text.length} / 500`;
+      validationMessage.innerHTML = `<span class="${result.ok ? 'text-emerald-500' : result.empty ? 'text-indigo-500' : 'text-amber-500'}">●</span> ${result.message}`;
+      listenBtn.disabled = !result.ok;
+      if (text.trim()) renderKaraoke(text);
+      else { karaokeText.textContent = 'Your words will appear here as you practice.'; progressBar.style.width = '0%'; }
+      if (activeSpeech) stopSpeech(false);
+      if (text.trim() !== sampleSelect.value && !samples[category.value].some(item => item.text === text.trim())) {
+        currentTranslation = '';
+        $('translationText').textContent = 'Tap “Translate current text” to translate your own sentence.';
+        $('translationNote').classList.remove('hidden');
+        $('translateBtn').classList.remove('hidden');
+      }
+    }
+    function renderKaraoke(text) {
+      const matcher = /\S+/g;
+      let last = 0;
+      let html = '';
+      currentWords = [];
+      let match;
+      while ((match = matcher.exec(text)) !== null) {
+        html += escapeHtml(text.slice(last, match.index));
+        const index = currentWords.length;
+        currentWords.push({ start: match.index, end: match.index + match[0].length });
+        html += `<span class="word" data-word="${index}">${escapeHtml(match[0])}</span>`;
+        last = match.index + match[0].length;
+      }
+      html += escapeHtml(text.slice(last));
+      karaokeText.innerHTML = html || 'Your words will appear here as you practice.';
+    }
+    function escapeHtml(value) { return value.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char])); }
+    function highlightAt(charIndex) {
+      let activeIndex = currentWords.findIndex(word => charIndex >= word.start && charIndex < word.end);
+      if (activeIndex < 0 && charIndex >= 0) activeIndex = currentWords.findIndex(word => word.start >= charIndex);
+      document.querySelectorAll('.word').forEach((node, index) => node.classList.toggle('active', index === activeIndex));
+      if (activeIndex >= 0 && currentWords.length) progressBar.style.width = `${Math.round(((activeIndex + 1) / currentWords.length) * 100)}%`;
+    }
+    function setPlaying(playing) {
+      activeSpeech = playing;
+      stopBtn.disabled = !playing;
+      restartBtn.disabled = !input.value.trim();
+      waveform.classList.toggle('hidden', !playing);
+      waveform.classList.toggle('flex', playing);
+      if (playing) playStatus.textContent = 'Speaking… follow the highlight';
+      else if (playStatus.textContent !== 'Ready when you are') playStatus.textContent = 'Playback paused';
+    }
+    function stopSpeech(resetStatus = true) {
+      speechToken++;
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      clearInterval(fallbackTimer);
+      boundarySeen = false;
+      setPlaying(false);
+      if (resetStatus) playStatus.textContent = 'Playback stopped';
+      document.querySelectorAll('.word.active').forEach(node => node.classList.remove('active'));
+    }
+    function speak() {
+      const text = input.value.trim();
+      const result = validateEnglish(text);
+      if (!result.ok) { updateInputState(); return; }
+      if (!('speechSynthesis' in window)) {
+        playStatus.textContent = 'Speech playback is not supported in this browser.';
+        return;
+      }
+      stopSpeech(false);
+      renderKaraoke(text);
+      progressBar.style.width = '0%';
+      playStatus.textContent = 'Preparing voice…';
+      const token = ++speechToken;
+      utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = Number($('speedRange').value);
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoice = voices.find(voice => /^en(-|_)/i.test(voice.lang)) || voices.find(voice => /english/i.test(voice.name));
+      if (englishVoice) utterance.voice = englishVoice;
+      boundarySeen = false;
+      utterance.onstart = () => { if (token !== speechToken) return; setPlaying(true); };
+      utterance.onboundary = (event) => {
+        if (token !== speechToken || event.name && event.name !== 'word') return;
+        boundarySeen = true;
+        highlightAt(event.charIndex);
+      };
+      utterance.onend = () => {
+        if (token !== speechToken) return;
+        clearInterval(fallbackTimer);
+        setPlaying(false);
+        playStatus.textContent = 'Nice work — listen again or try it yourself.';
+        progressBar.style.width = '100%';
+        document.querySelectorAll('.word').forEach(node => node.classList.add('active'));
+        window.setTimeout(() => document.querySelectorAll('.word').forEach(node => node.classList.remove('active')), 800);
+      };
+      utterance.onerror = (event) => {
+        if (token !== speechToken || event.error === 'canceled' || event.error === 'interrupted') return;
+        clearInterval(fallbackTimer);
+        setPlaying(false);
+        playStatus.textContent = 'Could not play speech. Please try again.';
+      };
+      window.speechSynthesis.speak(utterance);
+      // Fallback for engines that omit SpeechSynthesisUtterance.onboundary.
+      const started = Date.now();
+      const estimateMs = Math.max(1200, text.length * 62 / Number($('speedRange').value));
+      fallbackTimer = window.setInterval(() => {
+        if (token !== speechToken || boundarySeen) return;
+        const progress = Math.min(0.98, (Date.now() - started) / estimateMs);
+        highlightAt(Math.floor(progress * text.length));
+      }, 120);
+      restartBtn.disabled = false;
+    }
+
+    async function translateCurrentText() {
+      const text = input.value.trim();
+      if (!validateEnglish(text).ok) return;
+      const sample = Object.values(samples).flat().find(item => item.text === text);
+      if (sample) {
+        currentTranslation = sample.tr;
+        $('translationText').textContent = sample.tr;
+        $('translationNote').classList.add('hidden');
+        $('translateBtn').classList.add('hidden');
+        return;
+      }
+      $('translationText').textContent = 'Translating…';
+      $('translateBtn').disabled = true;
+      try {
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|tr`;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Translation service unavailable');
+        const data = await response.json();
+        const translation = data?.responseData?.translatedText;
+        if (!translation || data.responseStatus >= 400) throw new Error('No translation returned');
+        currentTranslation = translation;
+        $('translationText').textContent = translation;
+        $('translationNote').classList.remove('hidden');
+      } catch (error) {
+        $('translationText').textContent = 'Sorry, translation is unavailable right now. Please try again in a moment.';
+      } finally { $('translateBtn').disabled = false; }
+    }
+
+    $('themeToggle').addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      $('sunIcon').classList.toggle('hidden', !dark);
+      $('moonIcon').classList.toggle('hidden', dark);
+      document.querySelector('meta[name="theme-color"]').content = dark ? '#10121a' : '#f7f8fc';
+      try { localStorage.setItem('tda-echo-theme', dark ? 'dark' : 'light'); } catch (_) {}
+    });
+    try {
+      const savedTheme = localStorage.getItem('tda-echo-theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark'); $('sunIcon').classList.remove('hidden'); $('moonIcon').classList.add('hidden'); document.querySelector('meta[name="theme-color"]').content = '#10121a';
+      }
+    } catch (_) {}
+    category.addEventListener('change', populateSamples);
+    sampleSelect.addEventListener('change', () => loadSample(sampleSelect.value));
+    input.addEventListener('input', updateInputState);
+    listenBtn.addEventListener('click', speak);
+    stopBtn.addEventListener('click', () => stopSpeech(true));
+    restartBtn.addEventListener('click', speak);
+    $('speedRange').addEventListener('input', (event) => { $('speedValue').textContent = `${Number(event.target.value).toFixed(2).replace(/0$/, '')}×`; });
+    $('translationToggle').addEventListener('click', () => {
+      const panel = $('translationPanel');
+      const opening = panel.classList.contains('hidden');
+      panel.classList.toggle('hidden', !opening);
+      $('translationToggle').setAttribute('aria-expanded', String(opening));
+      $('translationArrow').classList.toggle('rotate-180', opening);
+      if (opening && !currentTranslation && validateEnglish(input.value).ok) translateCurrentText();
+    });
+    $('translateBtn').addEventListener('click', translateCurrentText);
+    populateSamples();
+    $('speedValue').textContent = '1×';
+    if ('speechSynthesis' in window) window.speechSynthesis.getVoices();
+  </script>
+</body>
+</html>
