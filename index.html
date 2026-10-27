@@ -4,33 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f7f8fc" />
-  <meta name="description" content="TDA Echo is a free, open-source English pronunciation practice site with karaoke word highlighting, adjustable speech speed, and Turkish translations." />
+  <meta name="description" content="Practice English pronunciation with TDA Echo: listen to ready-made paragraphs, follow karaoke word highlights, and explore Turkish translations." />
   <link rel="canonical" href="https://tda-echo.vercel.app/" />
-  <meta name="robots" content="index, follow, max-image-preview:large" />
-  <meta name="application-name" content="TDA Echo" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="TDA Echo" />
-  <meta property="og:url" content="https://tda-echo.vercel.app/" />
-  <meta property="og:title" content="TDA Echo — Free English Pronunciation Practice" />
-  <meta property="og:description" content="Practice English pronunciation for free with listen-along karaoke, adjustable speech speed, and Turkish translations." />
-  <meta property="og:locale" content="en_US" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="TDA Echo — Free English Pronunciation Practice" />
-  <meta name="twitter:description" content="Practice English pronunciation for free with listen-along karaoke, adjustable speech speed, and Turkish translations." />
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "TDA Echo",
-      "url": "https://tda-echo.vercel.app/",
-      "description": "Free, open-source English pronunciation practice with karaoke word highlighting, adjustable speech speed, and Turkish translations.",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Any",
-      "inLanguage": ["en", "tr"],
-      "isAccessibleForFree": true
-    }
-  </script>
-  <title>TDA Echo | Free English Pronunciation Practice</title>
+  <title>TDA Echo — English Pronunciation Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
@@ -44,6 +20,8 @@
     .word { transition: color .12s ease, background-color .12s ease, box-shadow .12s ease; border-radius: .28em; }
     .word.active { color: #fff; background: #635bff; box-shadow: 0 0 0 .15em #635bff; }
     .dark .word.active { color: #fff; background: #817aff; box-shadow: 0 0 0 .15em #817aff; }
+    .word.segment-active { color: #4338ca; background: rgba(99, 91, 255, .12); box-shadow: 0 0 0 .12em rgba(99, 91, 255, .12); }
+    .dark .word.segment-active { color: #c4bfff; background: rgba(129, 122, 255, .2); box-shadow: 0 0 0 .12em rgba(129, 122, 255, .2); }
     .wave-bar { animation: wave 1s ease-in-out infinite; transform-origin: bottom; }
     .wave-bar:nth-child(2n) { animation-delay: .15s; }
     .wave-bar:nth-child(3n) { animation-delay: .3s; }
@@ -68,8 +46,8 @@
 
     <section class="mb-8 max-w-2xl">
       <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-900/70 dark:bg-indigo-950/60 dark:text-indigo-300"><span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span> LISTEN · PRACTICE · SPEAK</div>
-      <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl dark:text-white">TDA Echo: <span class="text-indigo-600 dark:text-indigo-400">English pronunciation practice.</span></h1>
-      <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">Practice English pronunciation for free: listen to natural speech, follow each word with karaoke highlighting, and improve at your own pace.</p>
+      <h1 class="text-3xl font-black tracking-tight text-slate-900 sm:text-4xl dark:text-white">Find your <span class="text-indigo-600 dark:text-indigo-400">English rhythm.</span></h1>
+      <p class="mt-3 text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">Listen to natural English, follow each word, and practice at your own pace.</p>
     </section>
 
     <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(290px,.8fr)]">
@@ -131,9 +109,9 @@
       <aside class="space-y-5">
         <section class="card-shadow overflow-hidden rounded-3xl border border-slate-200/80 bg-white dark:border-slate-800 dark:bg-slate-900">
           <div class="bg-gradient-to-br from-indigo-600 to-violet-600 p-5 text-white sm:p-6"><div class="flex items-start justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[.15em] text-indigo-100">A quick practice tip</p><h2 class="mt-2 text-xl font-extrabold leading-snug">Listen first.<br/>Then say it out loud.</h2></div><span class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/15"><svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="1.8"/><path d="M19 11v1a7 7 0 0 1-14 0v-1m7 8v3m-4 0h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span></div><p class="mt-3 text-sm leading-6 text-indigo-100">Try shadowing: speak along with the voice and copy its rhythm, not just the individual sounds.</p></div>
-          <div class="p-5 sm:p-6"><h3 class="text-sm font-bold">Your practice flow</h3><ol class="mt-4 space-y-4"><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">1</span><span><strong class="block text-sm">Choose a paragraph</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Pick a daily, travel, or academic topic—or write your own English text.</span></span></li><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">2</span><span><strong class="block text-sm">Listen and follow</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Words light up as the browser reads them aloud.</span></span></li><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">3</span><span><strong class="block text-sm">Repeat and improve</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Slow down playback, then say the paragraph yourself.</span></span></li></ol></div>
+          <div class="p-5 sm:p-6"><h3 class="text-sm font-bold">Your practice flow</h3><ol class="mt-4 space-y-4"><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">1</span><span><strong class="block text-sm">Choose a paragraph</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Pick a daily, travel, or academic topic—or write your own English text.</span></span></li><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">2</span><span><strong class="block text-sm">Listen and follow</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Words highlight when the browser reports word timing; otherwise, the current sentence is highlighted.</span></span></li><li class="flex gap-3"><span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">3</span><span><strong class="block text-sm">Repeat and improve</strong><span class="mt-1 block text-xs leading-5 text-slate-500 dark:text-slate-400">Slow down playback, then say the paragraph yourself.</span></span></li></ol></div>
         </section>
-        <div class="rounded-2xl border border-slate-200/80 bg-white/70 p-4 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400"><span class="font-semibold text-slate-700 dark:text-slate-200">Browser note:</span> Voice and karaoke timing depend on your device and browser. Some voices do not report word boundaries; highlighting may be approximate. For audio, allow your browser to use speech synthesis.</div>
+        <div class="rounded-2xl border border-slate-200/80 bg-white/70 p-4 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400"><span class="font-semibold text-slate-700 dark:text-slate-200">Browser note:</span> Word-by-word highlighting uses speech-boundary events supplied by your browser. If a voice does not provide them, the app switches to sentence-level highlighting instead of guessing word timing. For audio, allow your browser to use speech synthesis.</div>
       </aside>
     </div>
     <footer class="mt-8 text-center text-xs text-slate-400">TDA Echo · tda-echo.vercel.app · Made for everyday English practice · No account required</footer>
@@ -156,11 +134,6 @@
     };
 
     const $ = (id) => document.getElementById(id);
-    const isGoogleChrome = (() => {
-      const brands = navigator.userAgentData?.brands || [];
-      if (brands.length) return brands.some(({ brand }) => brand === 'Google Chrome');
-      return /Chrome\//.test(navigator.userAgent) && !/(Edg|OPR|SamsungBrowser|Brave)\//.test(navigator.userAgent);
-    })();
     const input = $('practiceInput');
     const category = $('sampleCategory');
     const sampleSelect = $('sampleSentence');
@@ -176,8 +149,11 @@
     let utterance = null;
     let activeSpeech = false;
     let speechToken = 0;
-    let fallbackTimer = null;
-    let boundarySeen = false;
+    let speechSegments = [];
+    let speechSegmentIndex = 0;
+    let currentSegment = null;
+    let segmentBoundarySeen = false;
+    let boundaryGraceTimer = null;
     let currentWords = [];
 
     function populateSamples() {
@@ -255,8 +231,50 @@
     function highlightAt(charIndex) {
       let activeIndex = currentWords.findIndex(word => charIndex >= word.start && charIndex < word.end);
       if (activeIndex < 0 && charIndex >= 0) activeIndex = currentWords.findIndex(word => word.start >= charIndex);
-      document.querySelectorAll('.word').forEach((node, index) => node.classList.toggle('active', index === activeIndex));
+      document.querySelectorAll('.word').forEach((node, index) => {
+        node.classList.toggle('active', index === activeIndex);
+        node.classList.remove('segment-active');
+      });
       if (activeIndex >= 0 && currentWords.length) progressBar.style.width = `${Math.round(((activeIndex + 1) / currentWords.length) * 100)}%`;
+      return activeIndex;
+    }
+    function splitSpeechSegments(text) {
+      const segments = [];
+      let segmentStart = 0;
+      for (let i = 0; i < text.length; i++) {
+        if (!/[.!?]/.test(text[i])) continue;
+        let end = i + 1;
+        while (end < text.length && /["')\]”’»]/.test(text[end])) end++;
+        if (end < text.length && !/\s/.test(text[end])) continue;
+        let start = segmentStart;
+        while (start < end && /\s/.test(text[start])) start++;
+        if (start < end) segments.push({ start, end, text: text.slice(start, end) });
+        segmentStart = end;
+        while (segmentStart < text.length && /\s/.test(text[segmentStart])) segmentStart++;
+        i = end - 1;
+      }
+      let start = segmentStart;
+      while (start < text.length && /\s/.test(text[start])) start++;
+      if (start < text.length) segments.push({ start, end: text.length, text: text.slice(start).trimEnd() });
+      return segments;
+    }
+    function segmentWordIndexes(segment) {
+      const indexes = [];
+      currentWords.forEach((word, index) => {
+        if (word.end > segment.start && word.start < segment.end) indexes.push(index);
+      });
+      return indexes;
+    }
+    function highlightSegment(segment) {
+      const indexes = new Set(segmentWordIndexes(segment));
+      document.querySelectorAll('.word').forEach((node, index) => {
+        node.classList.remove('active');
+        node.classList.toggle('segment-active', indexes.has(index));
+      });
+      const firstWord = indexes.values().next().value;
+      if (firstWord !== undefined && currentWords.length) {
+        progressBar.style.width = `${Math.round((firstWord / currentWords.length) * 100)}%`;
+      }
     }
     function setPlaying(playing) {
       activeSpeech = playing;
@@ -264,18 +282,19 @@
       restartBtn.disabled = !input.value.trim();
       waveform.classList.toggle('hidden', !playing);
       waveform.classList.toggle('flex', playing);
-      if (playing) playStatus.textContent = 'Speaking… follow the highlight';
+      if (playing) playStatus.textContent = 'Speaking…';
       else if (playStatus.textContent !== 'Ready when you are') playStatus.textContent = 'Playback paused';
     }
     function stopSpeech(resetStatus = true) {
       speechToken++;
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      clearInterval(fallbackTimer);
-      fallbackTimer = null;
-      boundarySeen = false;
+      clearTimeout(boundaryGraceTimer);
+      speechSegments = [];
+      speechSegmentIndex = 0;
+      currentSegment = null;
       setPlaying(false);
       if (resetStatus) playStatus.textContent = 'Playback stopped';
-      document.querySelectorAll('.word.active').forEach(node => node.classList.remove('active'));
+      document.querySelectorAll('.word.active, .word.segment-active').forEach(node => node.classList.remove('active', 'segment-active'));
     }
     function speak() {
       const text = input.value.trim();
@@ -290,94 +309,74 @@
       progressBar.style.width = '0%';
       playStatus.textContent = 'Preparing voice…';
       const token = ++speechToken;
-      utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = Number($('speedRange').value);
-      const voices = window.speechSynthesis.getVoices();
-      const englishVoice = voices.find(voice => /^en(-|_)/i.test(voice.lang)) || voices.find(voice => /english/i.test(voice.name));
-      if (englishVoice) utterance.voice = englishVoice;
-      boundarySeen = false;
-      const speechRate = Number($('speedRange').value);
-      let speechStartedAt = 0;
-      let chromeAnchorChar = 0;
-      let chromeAnchorTime = 0;
-      let chromeCharsPerMs = speechRate / 62;
-      let previousChromeBoundary = null;
-      let lastChromeChar = 0;
-      utterance.onstart = () => {
+      speechSegments = splitSpeechSegments(text);
+      speechSegmentIndex = 0;
+
+      function finishSpeech() {
         if (token !== speechToken) return;
-        setPlaying(true);
-        // Start the estimate only when the voice actually starts, never while speech is queued.
-        speechStartedAt = performance.now();
-        const punctuationPauses = (text.match(/[,.!?;:]/g) || []).length * 100;
-        const estimateMs = Math.max(1200, (text.length * (isGoogleChrome ? 62 : 78) + punctuationPauses) / speechRate);
-        chromeAnchorChar = 0;
-        chromeAnchorTime = 0;
-        chromeCharsPerMs = speechRate / 62;
-        previousChromeBoundary = null;
-        lastChromeChar = 0;
-        fallbackTimer = window.setInterval(() => {
-          if (token !== speechToken || (boundarySeen && !isGoogleChrome)) return;
-          if (isGoogleChrome) {
-            const elapsedMs = performance.now() - speechStartedAt;
-            const projectedChar = chromeAnchorChar + Math.max(0, elapsedMs - chromeAnchorTime) * chromeCharsPerMs;
-            lastChromeChar = Math.max(lastChromeChar, Math.min(text.length * 0.9, projectedChar));
-            highlightAt(Math.floor(lastChromeChar));
-          } else {
-            const progress = Math.min(0.9, (performance.now() - speechStartedAt) / estimateMs);
-            highlightAt(Math.floor(progress * text.length));
-          }
-        }, 120);
-      };
-      utterance.onboundary = (event) => {
-        if (token !== speechToken || event.name && event.name !== 'word') return;
-        if (!Number.isFinite(event.charIndex) || event.charIndex < 0 || event.charIndex >= text.length) return;
-        if (isGoogleChrome) {
-          // Use the boundary's audio timestamp to measure this voice's pace and catch up if Chrome dispatches late.
-          const nowElapsedMs = performance.now() - speechStartedAt;
-          const eventElapsedMs = Number.isFinite(event.elapsedTime)
-            ? Math.min(nowElapsedMs, Math.max(0, event.elapsedTime * 1000))
-            : nowElapsedMs;
-          if (previousChromeBoundary) {
-            const deltaChars = event.charIndex - previousChromeBoundary.charIndex;
-            const deltaMs = eventElapsedMs - previousChromeBoundary.elapsedMs;
-            if (deltaChars > 0 && deltaMs >= 80) {
-              const baseline = speechRate / 62;
-              const observed = Math.min(baseline * 2, Math.max(baseline * 0.5, deltaChars / deltaMs));
-              chromeCharsPerMs = chromeCharsPerMs * 0.55 + observed * 0.45;
-            }
-          }
-          previousChromeBoundary = { charIndex: event.charIndex, elapsedMs: eventElapsedMs };
-          chromeAnchorChar = event.charIndex;
-          chromeAnchorTime = eventElapsedMs;
-          const projectedChar = event.charIndex + Math.max(0, nowElapsedMs - eventElapsedMs) * chromeCharsPerMs;
-          lastChromeChar = Math.max(lastChromeChar, projectedChar);
-          highlightAt(Math.floor(lastChromeChar));
-          return;
-        }
-        boundarySeen = true;
-        clearInterval(fallbackTimer);
-        fallbackTimer = null;
-        highlightAt(event.charIndex);
-      };
-      utterance.onend = () => {
-        if (token !== speechToken) return;
-        clearInterval(fallbackTimer);
-        fallbackTimer = null;
+        clearTimeout(boundaryGraceTimer);
+        currentSegment = null;
+        document.querySelectorAll('.word.active, .word.segment-active').forEach(node => node.classList.remove('active', 'segment-active'));
         setPlaying(false);
         playStatus.textContent = 'Nice work — listen again or try it yourself.';
         progressBar.style.width = '100%';
-        document.querySelectorAll('.word').forEach(node => node.classList.add('active'));
-        window.setTimeout(() => document.querySelectorAll('.word').forEach(node => node.classList.remove('active')), 800);
-      };
-      utterance.onerror = (event) => {
-        if (token !== speechToken || event.error === 'canceled' || event.error === 'interrupted') return;
-        clearInterval(fallbackTimer);
-        fallbackTimer = null;
-        setPlaying(false);
-        playStatus.textContent = 'Could not play speech. Please try again.';
-      };
-      window.speechSynthesis.speak(utterance);
+      }
+
+      function speakNextSegment() {
+        if (token !== speechToken) return;
+        if (speechSegmentIndex >= speechSegments.length) { finishSpeech(); return; }
+        const segment = speechSegments[speechSegmentIndex++];
+        currentSegment = segment;
+        segmentBoundarySeen = false;
+        utterance = new SpeechSynthesisUtterance(segment.text);
+        utterance.lang = 'en-US';
+        utterance.rate = Number($('speedRange').value);
+        const voices = window.speechSynthesis.getVoices();
+        const englishVoice = voices.find(voice => /^en(-|_)/i.test(voice.lang)) || voices.find(voice => /english/i.test(voice.name));
+        if (englishVoice) utterance.voice = englishVoice;
+        utterance.onstart = () => {
+          if (token !== speechToken) return;
+          setPlaying(true);
+          highlightSegment(segment);
+          playStatus.textContent = 'Speaking…';
+          clearTimeout(boundaryGraceTimer);
+          boundaryGraceTimer = window.setTimeout(() => {
+            if (token === speechToken && currentSegment === segment && !segmentBoundarySeen) {
+              playStatus.textContent = 'Speaking… sentence highlight (word timing unavailable)';
+            }
+          }, 900);
+        };
+        utterance.onboundary = (event) => {
+          if (token !== speechToken || currentSegment !== segment || (event.name && event.name !== 'word')) return;
+          if (!Number.isFinite(event.charIndex) || event.charIndex < 0 || event.charIndex >= segment.text.length) return;
+          segmentBoundarySeen = true;
+          clearTimeout(boundaryGraceTimer);
+          const activeIndex = highlightAt(segment.start + event.charIndex);
+          if (activeIndex >= 0) playStatus.textContent = 'Speaking… follow the word highlight';
+        };
+        utterance.onend = () => {
+          if (token !== speechToken || currentSegment !== segment) return;
+          clearTimeout(boundaryGraceTimer);
+          const indexes = segmentWordIndexes(segment);
+          if (indexes.length && currentWords.length) {
+            progressBar.style.width = `${Math.round(((indexes[indexes.length - 1] + 1) / currentWords.length) * 100)}%`;
+          }
+          document.querySelectorAll('.word.active, .word.segment-active').forEach(node => node.classList.remove('active', 'segment-active'));
+          currentSegment = null;
+          speakNextSegment();
+        };
+        utterance.onerror = (event) => {
+          if (token !== speechToken || event.error === 'canceled' || event.error === 'interrupted') return;
+          clearTimeout(boundaryGraceTimer);
+          currentSegment = null;
+          document.querySelectorAll('.word.active, .word.segment-active').forEach(node => node.classList.remove('active', 'segment-active'));
+          setPlaying(false);
+          playStatus.textContent = 'Could not play speech. Please try again.';
+        };
+        window.speechSynthesis.speak(utterance);
+      }
+
+      speakNextSegment();
       restartBtn.disabled = false;
     }
 
