@@ -156,6 +156,11 @@
     };
 
     const $ = (id) => document.getElementById(id);
+    const isGoogleChrome = (() => {
+      const brands = navigator.userAgentData?.brands || [];
+      if (brands.length) return brands.some(({ brand }) => brand === 'Google Chrome');
+      return /Chrome\//.test(navigator.userAgent) && !/(Edg|OPR|SamsungBrowser|Brave)\//.test(navigator.userAgent);
+    })();
     const input = $('practiceInput');
     const category = $('sampleCategory');
     const sampleSelect = $('sampleSentence');
@@ -298,10 +303,11 @@
         // Start the estimate only when the voice actually starts, never while speech is queued.
         const startedAt = performance.now();
         const punctuationPauses = (text.match(/[,.!?;:]/g) || []).length * 100;
-        const estimateMs = Math.max(1200, (text.length * 78 + punctuationPauses) / Number($('speedRange').value));
+        const msPerCharacter = isGoogleChrome ? 62 : 78;
+        const estimateMs = Math.max(1200, (text.length * msPerCharacter + punctuationPauses) / Number($('speedRange').value));
         fallbackTimer = window.setInterval(() => {
-          if (token !== speechToken || boundarySeen) return;
-          // Keep the estimate slightly behind typical speech; native word events take over when available.
+          if (token !== speechToken || (boundarySeen && !isGoogleChrome)) return;
+          // Chrome's word-boundary events can lag speech, so keep the calibrated clock running there.
           const progress = Math.min(0.9, (performance.now() - startedAt) / estimateMs);
           highlightAt(Math.floor(progress * text.length));
         }, 120);
@@ -309,6 +315,8 @@
       utterance.onboundary = (event) => {
         if (token !== speechToken || event.name && event.name !== 'word') return;
         if (!Number.isFinite(event.charIndex) || event.charIndex < 0 || event.charIndex >= text.length) return;
+        // Edge reports reliable word positions; Chromium's event timing is inconsistent, so its clock stays active.
+        if (isGoogleChrome) return;
         boundarySeen = true;
         clearInterval(fallbackTimer);
         fallbackTimer = null;
